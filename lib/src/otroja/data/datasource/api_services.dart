@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:otroja_users/src/core/utils/constant.dart';
 
-
 class ApiService {
   final Dio _dio = Dio();
 
@@ -9,7 +8,12 @@ class ApiService {
     _dio.options.baseUrl = baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 100);
     _dio.options.receiveTimeout = const Duration(seconds: 100);
-    // You can add more default configurations here
+    
+    // Set default headers
+    _dio.options.headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $myToken',
+    };
   }
 
   // GET request
@@ -17,13 +21,15 @@ class ApiService {
       {Map<String, dynamic>? queryParameters}) async {
     try {
       print('////////////////////in get');
-
-      final response = await _dio.get(path, queryParameters: queryParameters);
+      final response = await _dio.get(
+        path,
+        queryParameters: queryParameters,
+      );
       print('after response');
       return response;
     } on DioException catch (e) {
       print("eeeeeeeeeeeeeeeeeeeeeeeeee");
-      print(e.message);
+      print(e);
       throw _handleError(e);
     }
   }
@@ -32,8 +38,11 @@ class ApiService {
   Future<Response> post(String path,
       {dynamic data, Map<String, dynamic>? queryParameters}) async {
     try {
-      final response =
-          await _dio.post(path, data: data, queryParameters: queryParameters);
+      final response = await _dio.post(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
 
       return response;
     } on DioException catch (e) {
@@ -46,8 +55,11 @@ class ApiService {
   Future<Response> put(String path,
       {dynamic data, Map<String, dynamic>? queryParameters}) async {
     try {
-      final response =
-          await _dio.put(path, data: data, queryParameters: queryParameters);
+      final response = await _dio.put(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
       return response;
     } on DioException catch (e) {
       throw _handleError(e);
@@ -58,13 +70,29 @@ class ApiService {
   Future<Response> delete(String path,
       {Map<String, dynamic>? queryParameters}) async {
     try {
-      final response =
-          await _dio.delete(path, queryParameters: queryParameters);
+      final response = await _dio.delete(
+        path,
+        queryParameters: queryParameters,
+      );
       return response;
     } on DioException catch (e) {
       throw _handleError(e);
     }
   }
+//   Future<String> downloadFile(String url) async {
+//   try {
+//     Dio dio = Dio();
+//     Directory tempDir = await getTemporaryDirectory();
+//     String filePath = '${tempDir.path}/document.pdf'; // Change the filename as needed
+
+//     await dio.download(url, filePath);
+//     return filePath; // Return the local file path
+//   } catch (e) {
+//     throw Exception('Error downloading file: $e');
+//   }
+// }
+
+  
 
   // Error handling
   Exception _handleError(DioException e) {

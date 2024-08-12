@@ -127,11 +127,11 @@ class HomePage extends StatelessWidget {
                   top: 120.h,
                   child: HomePageButton(
                     onPressed: () {
-                  //    context.pushNamed(Routes.showStudentsRecite);
+                      context.pushNamed(Routes.library);
                     },
                     width: 100.w,
                     height: 90.h,
-                    text: 'التسميع',
+                    text: 'المكتبة',
                   ),
                 ),
                 Positioned(

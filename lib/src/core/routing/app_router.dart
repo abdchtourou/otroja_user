@@ -5,6 +5,8 @@ import 'package:otroja_users/src/core/routing/cubits.dart';
 import 'package:otroja_users/src/core/routing/routes.dart';
 import '../../otroja/data/models/stuednt_info.dart';
 import '../../otroja/presentation/screens/Home/homePage.dart';
+import '../../otroja/presentation/screens/Library/showDocuments/show_documents_screen.dart';
+import '../../otroja/presentation/screens/Library/showDocuments/widgets/pdf_screen.dart';
 import '../../otroja/presentation/screens/student/absencesDays/absence_for_Group.dart';
 import '../../otroja/presentation/screens/student/absencesDays/absences_by_group.dart';
 import '../../otroja/presentation/screens/student/studentDetails/student_details_with_bloc.dart';
@@ -27,6 +29,17 @@ class AppRouter {
                   ],
                   child: StudentDetailsWithBloc(),
                 ));
+      case Routes.library:
+        Cubits.documentCubit.loadDocuments();
+        return MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider.value(
+                      value: Cubits.documentCubit,
+                    ),
+                  ],
+                  child: ShowDocumentsScreen(),
+                ));
 
       case Routes.studentAbsencsByGroup:
         final absences = settings.arguments as List<Absence>;
@@ -48,6 +61,10 @@ class AppRouter {
             builder: (_) => StudentPointsScreen(
                   results: results,
                 ));
+
+      case Routes.pdf:
+        final url = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) => PDFScreen(url: url));
     }
     return null;
   }
