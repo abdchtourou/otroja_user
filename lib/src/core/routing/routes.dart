@@ -6,4 +6,8 @@ class Routes {
   static const String studentAbsencsForGroup = "/studentAbsencsForGroup";
   static const String pdf = "/pdf";
   static const String library = "/library";
+  static const String examDetails = "/ExamDetails";
+  static const String questionUser = "/QuestionUser";
+
+
 }
