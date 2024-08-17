@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../data/models/exam_details_model.dart';
 import '../model/questions.dart';
 import '../take_exam_user_cubit/take_exam_user_cubit.dart';
 import '../take_exam_user_cubit/take_exam_user_state.dart';
@@ -12,7 +13,7 @@ class QuestionBodyUser extends StatelessWidget {
       required this.cubit,
       required this.currentQuestion});
 
-  Questions currentQuestion;
+  Question currentQuestion;
   TakeExamUserState state;
   TakeExamUserCubit cubit;
 

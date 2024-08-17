@@ -138,7 +138,7 @@ class PastExamsTab extends StatelessWidget {
                           startDate: pastExams[index].date!,
                           examName: pastExams[index].name!,
                           onTap: () {
-                            context.pushNamed(Routes.examDetails, arguments: pastExams[index]);
+                            context.pushNamed(Routes.examDetails, arguments: pastExams[index].id);
                           },
                         );
                       },

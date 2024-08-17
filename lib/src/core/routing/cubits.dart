@@ -1,3 +1,5 @@
+import 'package:otroja_users/src/otroja/cubits/exam_details/exam_details_cubit.dart';
+import 'package:otroja_users/src/otroja/data/repositories/exam_details_repo.dart';
 import 'package:otroja_users/src/otroja/data/repositories/show_exam_repo.dart';
 
 import '../../otroja/cubits/documentCubit/document_cubit.dart';
@@ -12,4 +14,5 @@ class Cubits {
       StudentInfoCubit(StudentRepository(ApiService()));
   static DocumentCubit documentCubit = DocumentCubit(DocumentRepository(ApiService()));
   static ShowExamsCubit showExamsCubit = ShowExamsCubit(ShowExamRepo(ApiService()));
+  static ExamDetailsCubit examDetailsCubit = ExamDetailsCubit(ExamDetailsRepo(ApiService()));
 }

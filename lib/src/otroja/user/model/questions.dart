@@ -7,7 +7,6 @@ class ShowExamsModel {
   String? createdAt;
   String? updatedAt;
   List<Questions>? questions;
-  List<Null>? groups;
 
   ShowExamsModel(
       {this.id,
@@ -18,7 +17,7 @@ class ShowExamsModel {
         this.createdAt,
         this.updatedAt,
         this.questions,
-        this.groups});
+      });
 
   ShowExamsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

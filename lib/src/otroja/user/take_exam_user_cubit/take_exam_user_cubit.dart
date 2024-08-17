@@ -4,20 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:otroja_users/src/otroja/user/take_exam_user_cubit/take_exam_user_state.dart';
 
 import '../../data/datasource/api_services.dart';
-import '../model/questions.dart';
+import '../../data/models/exam_details_model.dart';
 import '../widget_question/data/send_result.dart';
 
 class TakeExamUserCubit extends Cubit<TakeExamUserState> {
   TakeExamUserCubit() : super(const TakeExamUserState());
-  int examID=0;
+  int examID = 0;
 
-  void initialize(List<Questions> questions,int examId,int duration) {
-    examID=examId;
+  void initialize(List<Question> questions, int examId, int duration) {
+    examID = examId;
     emit(state.copyWith(
-      qaList: questions,
-      selectedAnswers: List<int>.filled(questions.length, -1),
-      remainingTime: duration *60
-    ));
+        qaList: questions,
+        selectedAnswers: List<int>.filled(questions.length, -1),
+        remainingTime: duration * 60));
 
     startTimer();
   }
@@ -48,14 +47,18 @@ class TakeExamUserCubit extends Cubit<TakeExamUserState> {
     }
   }
 
+  int score = 0;
+
   void finishExam() {
     if (state.isExamFinished) return;
 
     int correctAnswers = 0;
     for (int i = 0; i < state.qaList.length; i++) {
-      if (state.selectedAnswers[i] != -1 && state.qaList[i].answers![state.selectedAnswers[i]].isCorrect == 1) {
+      if (state.selectedAnswers[i] != -1 &&
+          state.qaList[i].answers![state.selectedAnswers[i]].isCorrect) {
         correctAnswers++;
       }
+      score = correctAnswers;
     }
 
     emit(TakeExamUserFinishExam(
@@ -73,6 +76,7 @@ class TakeExamUserCubit extends Cubit<TakeExamUserState> {
       finishExam();
     }
   }
+
   Timer? _timer;
 
   void startTimer() {
@@ -93,15 +97,23 @@ class TakeExamUserCubit extends Cubit<TakeExamUserState> {
       selectedAnswers: List<int>.filled(state.qaList.length, -1),
     ));
   }
-  void sendResult(correctAnswers)async {
-    try{
+
+  void sendResult(correctAnswers) async {
+    try {
+      int score = ((correctAnswers / state.qaList.length) * 100).toInt();
+
       ApiService apiService = ApiService();
-      final data =
-          SendResult(studentId: 1, examId: examID, score: correctAnswers);
+      final data = SendResult(examId: examID, score: score);
+
       print(data.toJson());
       await apiService.post("results/create", data: data.toJson());
-    }catch(e){
+    } catch (e) {
       print(e);
     }
+  }
+
+  @override
+  Future<void> close() {
+    return super.close();
   }
 }

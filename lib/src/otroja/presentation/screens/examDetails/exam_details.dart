@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:otroja_users/src/core/utils/extensions.dart';
+import 'package:otroja_users/src/otroja/cubits/exam_details/exam_details_cubit.dart';
+import 'package:otroja_users/src/otroja/cubits/exam_details/exam_details_cubit.dart';
 import 'package:otroja_users/src/otroja/presentation/screens/examDetails/widget/details_ticket.dart';
+import 'package:otroja_users/src/otroja/presentation/widgets/otroja_circular_progress_indicator.dart';
 
 import '../../../../core/routing/routes.dart';
 import '../../../../core/utils/colors.dart';
@@ -12,11 +16,8 @@ import '../../../user/widget_question/question_background.dart';
 import '../../widgets/otroja_button.dart';
 
 class ExamDetails extends StatelessWidget {
-  ShowExamsModel showExamsModel;
-
   ExamDetails({
     super.key,
-    required this.showExamsModel,
   });
 
   @override
@@ -57,50 +58,62 @@ class ExamDetails extends StatelessWidget {
       body: Stack(
         children: [
           const QuestionBackground(),
-          SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20, left: 20, bottom: 30.h),
-                    child: DetailsTicket(
-                      showExamsModel: showExamsModel,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 50.w),
+          BlocBuilder<ExamDetailsCubit, ExamDetailsState>(
+            builder: (context, state) {
+              if (!state.isLoading) {
+                return SafeArea(
+                  child: SingleChildScrollView(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            " : الرجاء قراءة التعليمات الاتية ",
-                            style: TextStyle(color: OtrojaColors.primaryColor),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.1),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              right: 20, left: 20, bottom: 30.h),
+                          child: DetailsTicket(
+                            examDetailsModel: state.exam!,
                           ),
                         ),
-                        ...buildRows(instructions),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 50.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  " : الرجاء قراءة التعليمات الاتية ",
+                                  style: TextStyle(
+                                      color: OtrojaColors.primaryColor),
+                                ),
+                              ),
+                              ...buildRows(instructions),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: OtrojaButton(
+                              text: "التقدم للامتحان",
+                              onPressed: () {
+                                context.pushNamed(
+                                  Routes.questionUser,
+                                  arguments: ExamArguments(
+                                      showExamsModel: state.exam!.questions,
+                                      examId: state.exam!.id,
+
+                                      duration: state.exam!.duration),
+                                );
+                              }),
+                        )
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: OtrojaButton(
-                        text: "التقدم للامتحان",
-                        onPressed: () {
-                          context.pushNamed(
-                            Routes.questionUser,
-                            arguments: ExamArguments(
-                                showExamsModel: showExamsModel.questions!,
-                                examId: showExamsModel.subjectId!,
-                                duration: showExamsModel.duration),
-                          );
-                        }),
-                  )
-                ],
-              ),
-            ),
+                );
+              } else {
+                return Expanded(child: OtrojaCircularProgressIndicator());
+              }
+            },
           ),
         ],
       ),

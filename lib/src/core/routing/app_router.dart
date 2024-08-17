@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:otroja_users/src/core/routing/cubits.dart';
 import 'package:otroja_users/src/core/routing/routes.dart';
+import '../../otroja/data/models/exam_details_model.dart';
 import '../../otroja/data/models/stuednt_info.dart';
 import '../../otroja/presentation/screens/Home/homePage.dart';
 import '../../otroja/presentation/screens/Library/showDocuments/show_documents_screen.dart';
@@ -82,28 +83,29 @@ class AppRouter {
       case Routes.home:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
-              create: (context) => Cubits.showExamsCubit.. getExams(),
-              child: ShowExams(),
-            ));
+                  create: (context) => Cubits.showExamsCubit..getExams(),
+                  child: ShowExams(),
+                ));
       case Routes.questionUser:
         final ExamArguments args = settings.arguments as ExamArguments;
-        List<Questions> questionList = args.showExamsModel;
+        List<Question> questionList = args.showExamsModel;
         int examId = args.examId;
         var duration = args.duration;
 
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (_) =>
-            TakeExamUserCubit()..initialize(questionList, examId, duration),
+                TakeExamUserCubit()..initialize(questionList, examId, duration),
             child: const QuestionUser(),
           ),
         );
       case Routes.examDetails:
-        ShowExamsModel showExamsModel = settings.arguments as ShowExamsModel;
+        final int args = settings.arguments as int;
 
         return MaterialPageRoute(
-          builder: (_) => ExamDetails(
-            showExamsModel: showExamsModel,
+          builder: (_) => BlocProvider(
+            create: (context) => Cubits.examDetailsCubit..loadExam(args),
+            child: ExamDetails(),
           ),
         );
     }

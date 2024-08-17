@@ -9,9 +9,10 @@ class ShowExamRepo {
 
   Future<List<ShowExamsModel>> showExams() async {
     try {
-      final response = await apiService.get('exams');
+      final response = await apiService.get('student/get_exams');
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = response.data;
+        // print(responseData);
         List<dynamic> examsJson = responseData['data'];
         return examsJson.map((json) => ShowExamsModel.fromJson(json)).toList();
       } else {

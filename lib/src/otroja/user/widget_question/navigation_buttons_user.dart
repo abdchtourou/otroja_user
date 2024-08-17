@@ -42,8 +42,11 @@ class NavigationButtonsUser extends StatelessWidget {
               if (state.currentQuestionIndex + 1 < state.qaList.length) {
                 cubit.nextQuestion();
               } else {
+                print('///////////////////////////////// zed');
                 cubit.finishExam();
-                cubit.sendResult(state.correctAnswers);
+                print(cubit.score);
+                cubit.sendResult(cubit.score);
+
               }
             },
           ),

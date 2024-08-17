@@ -1,10 +1,11 @@
 
 import 'package:equatable/equatable.dart';
 
+import '../../data/models/exam_details_model.dart';
 import '../model/questions.dart';
 
 class TakeExamUserState extends Equatable {
-  final List<Questions> qaList;
+  final List<Question> qaList;
   final List<int> selectedAnswers;
   final int currentQuestionIndex;
   final bool isExamFinished;
@@ -25,7 +26,7 @@ class TakeExamUserState extends Equatable {
   });
 
   TakeExamUserState copyWith({
-    List<Questions>? qaList,
+    List<Question>? qaList,
     List<int>? selectedAnswers,
     int? currentQuestionIndex,
     bool? isExamFinished,
@@ -63,7 +64,7 @@ class TakeExamUserFinishExam extends TakeExamUserState {
   final int correctAnswers;
   final int total;
   final int currentQuestionIndex;
-  final List<Questions> qaList;
+  final List<Question> qaList;
 
   TakeExamUserFinishExam({
     required this.correctAnswers,

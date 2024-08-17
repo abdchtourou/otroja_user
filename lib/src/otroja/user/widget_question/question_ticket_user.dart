@@ -15,11 +15,12 @@ class QuestionTicketUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit=context.read<TakeExamUserCubit>();
     return BlocConsumer<TakeExamUserCubit, TakeExamUserState>(
       listener: (context, state) {
         if (state is TakeExamUserFinishExam) {
           print("////////////////////${state.correctAnswers}");
-          _showExamFinishedDialog(context, state);
+          _showExamFinishedDialog(context, state,cubit);
         }
       },
 
@@ -48,14 +49,16 @@ class QuestionTicketUser extends StatelessWidget {
       },
     );
   }
-  void _showExamFinishedDialog(BuildContext context, TakeExamUserFinishExam state) {
+  void _showExamFinishedDialog(BuildContext context, TakeExamUserFinishExam state,TakeExamUserCubit cubit) {
     showDialog(
       context: context,
       builder: (context) => OtrojaSuccessDialog(
         text:
-            "تم إنهاء الامتحان. لقد أجبت على ${state.correctAnswers} من أصل ${state.total} إجابات صحيحة.",
+              "تم إنهاء الامتحان. لقد أجبت على ${state.correctAnswers} من أصل ${state.total} إجابات صحيحة.",
         onPressed: (){
           context.pushNamed(Routes.home);
+          cubit.close();
+
 
 
         },

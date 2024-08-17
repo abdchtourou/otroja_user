@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:otroja_users/src/otroja/data/models/exam_details_model.dart';
 
 import '../../../../../core/utils/colors.dart';
 import '../../../../user/model/questions.dart';
 
 
 class DetailsTicket extends StatelessWidget {
-  DetailsTicket({Key? key, required this.showExamsModel}) : super(key: key);
-  ShowExamsModel showExamsModel;
+  DetailsTicket({Key? key, required this.examDetailsModel}) : super(key: key);
+  ExamDetailsModel examDetailsModel;
 
   static const Color kSecondaryTextColor = Color(0xFFC2C0C0);
   static const Color kCardBackgroundColor = Color(0xFFFFF5EC);
@@ -38,7 +39,7 @@ class DetailsTicket extends StatelessWidget {
   static const SizedBox kVerticalSpacing = SizedBox(height: 16.0);
 
   Map<String, String> splitDateTime() {
-    String dateTimeString = showExamsModel.date!;
+    String dateTimeString = examDetailsModel.date!;
     // Check if the input string is in the expected format
     if (!RegExp(r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$')
         .hasMatch(dateTimeString)) {
@@ -92,7 +93,7 @@ class DetailsTicket extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 25.h),
-                    _buildLabelValuePair('اسم الامتحان', showExamsModel.name!),
+                    _buildLabelValuePair('اسم الامتحان', examDetailsModel.name!),
                     const Divider(
                       thickness: 2,
                       color: OtrojaColors.primaryColor,
@@ -105,7 +106,7 @@ class DetailsTicket extends StatelessWidget {
                         'الامتحان يبدأ في غضون', result['time']!),
                     kVerticalSpacing,
                     _buildSubLabelValuePair(
-                        'مدة الامتحان', '${showExamsModel.duration!.toString()} دقيقة '),
+                        'مدة الامتحان', '${examDetailsModel.duration!.toString()} دقيقة '),
                   ],
                 ),
               ),
