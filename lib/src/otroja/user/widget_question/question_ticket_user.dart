@@ -57,7 +57,6 @@ class QuestionTicketUser extends StatelessWidget {
               "تم إنهاء الامتحان. لقد أجبت على ${state.correctAnswers} من أصل ${state.total} إجابات صحيحة.",
         onPressed: (){
           context.pushNamed(Routes.home);
-          cubit.close();
 
 
 

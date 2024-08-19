@@ -16,7 +16,7 @@ class TakeExamUserCubit extends Cubit<TakeExamUserState> {
     emit(state.copyWith(
         qaList: questions,
         selectedAnswers: List<int>.filled(questions.length, -1),
-        remainingTime: duration * 60));
+        remainingTime:  duration * 60));
 
     startTimer();
   }
@@ -104,6 +104,8 @@ class TakeExamUserCubit extends Cubit<TakeExamUserState> {
 
       ApiService apiService = ApiService();
       final data = SendResult(examId: examID, score: score);
+      close();
+
 
       print(data.toJson());
       await apiService.post("results/create", data: data.toJson());
