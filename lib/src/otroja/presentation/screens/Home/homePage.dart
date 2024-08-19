@@ -11,8 +11,6 @@ import 'widgets/homePageaApBar.dart';
 import 'widgets/homepagebutton.dart';
 import 'widgets/newsManager.dart';
 
-
-
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -84,18 +82,20 @@ class HomePage extends StatelessWidget {
                   top: 20.h,
                   child: HomePageButton(
                     onPressed: () {
-                      //context.pushNamed(Routes.showCourses);
+                      context.pushNamed(Routes.myReciteScreen);
                     },
                     width: 100.w,
                     height: 90.h,
-                    text: 'الدورات',
+                    text: 'تسميعاتي',
                   ),
                 ),
                 Positioned(
                   left: 131.w,
                   top: 225.h,
                   child: HomePageButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.pushNamed(Routes.showStudent);
+                    },
                     width: 100.w,
                     height: 90.h,
                     text: 'الأنشطة',
@@ -139,7 +139,7 @@ class HomePage extends StatelessWidget {
                   top: 47.h,
                   child: HomePageButton(
                     onPressed: () {
-                     // context.pushNamed(Routes.checkStudents);
+                      // context.pushNamed(Routes.checkStudents);
                     },
                     width: 80.w,
                     height: 75.h,
@@ -173,7 +173,7 @@ class HomePage extends StatelessWidget {
                   top: 45.h,
                   child: HomePageButton(
                     onPressed: () {
-                    //  context.pushNamed(Routes.checkGroups);
+                      //  context.pushNamed(Routes.checkGroups);
                     },
                     width: 80.w,
                     height: 75.h,
