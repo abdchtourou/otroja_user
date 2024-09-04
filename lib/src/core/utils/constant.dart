@@ -1,4 +1,4 @@
-String ip = "192.168.1.102";
+String ip = "192.168.1.107";
 String studentId = '';
-String baseUrl = "https://8b1a-185-107-56-139.ngrok-free.app/api/";
-String myToken = '10|Pjyfoe9mRIomOhqTJoycf6edICDcN9WkgRFjpC2p86c864e3';
+String baseUrl = "http://$ip:8000/api/";
+  String myToken = '31|zOhMrIQQdHIhPwUnQMyKT3UFRCndQmNl9zboTnOVea2bab4e';

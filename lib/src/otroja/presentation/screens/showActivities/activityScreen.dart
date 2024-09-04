@@ -43,7 +43,7 @@ class ActivityScreen extends StatelessWidget {
                             activityTitle: state.showActivity[index].name!,
                             activityOtroja: state.showActivity[index].points!,
                             //todo
-                            activityId: 1,
+                            activityId: state.showActivity[index].id!,
                             //state.showActivity[index].,
                           ),
                           itemCount: state.showActivity.length,

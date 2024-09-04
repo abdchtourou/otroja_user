@@ -8,6 +8,7 @@ class MyReciteRepository {
 Future<List<MyRecite>> fetchRecites() async {
   try {
     final response = await _apiService.get('recites/student');
+    print(response);
 
     
     if (response.data is Map<String, dynamic> && response.data['data'] is List) {

@@ -6,7 +6,8 @@ class StudentRepository {
 
   StudentRepository(this._apiService);
 
-  Future<StudentInfo> getStudentInfo() async {
+  Future<StudentInfo>
+  getStudentInfo() async {
     try {
       final response =
           await _apiService.get('/student/profile');

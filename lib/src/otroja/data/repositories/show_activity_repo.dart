@@ -16,6 +16,9 @@ class ShowActivityRepo{
 
   }
   Future<dynamic> didActivity(int studentId, int activityId) async {
+    print(studentId);
+    print(activityId);
+
   final response = await apiService.post(
     "activity/student/create",
     data: {
@@ -23,6 +26,8 @@ class ShowActivityRepo{
       'activity_id': activityId,
     },
   );
+  print(activityId);
+
   return response.data;
 }
   

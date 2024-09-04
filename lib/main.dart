@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:otroja_users/src/core/routing/app_router.dart';
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   runApp( MyApp(
@@ -35,6 +36,7 @@ final AppRouter appRouter;
               fontFamily: 'DIN Next LT Arabic',
             ),
             onGenerateRoute: appRouter.generateRoute,
+
            
           );
         });

@@ -1,20 +1,22 @@
-
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:otroja_users/src/core/utils/extensions.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../../../../../core/routing/routes.dart';
 import '../../../../../core/utils/colors.dart';
+import '../../../../cubits/announcement/show_announcement_cubit.dart';
+import '../../../widgets/otroja_circular_progress_indicator.dart';
 import 'newsItem.dart';
 
 // Import your project-specific packages
 
-
-
-
-
 class NewsManager extends StatefulWidget {
-  const NewsManager({Key? key}) : super(key: key);
+  final List<Announcement> list;
+
+  const NewsManager({Key? key, required this.list}) : super(key: key);
 
   @override
   _NewsManagerState createState() => _NewsManagerState();
@@ -23,22 +25,12 @@ class NewsManager extends StatefulWidget {
 // The state class for the NewsManager widget, handling scroll logic and timers.
 class _NewsManagerState extends State<NewsManager> {
   // List of news headlines to be displayed in the carousel.
-  final List<String> _newsItems = [
-    'Breaking News: h',
-    'Sports Update: Local team wins championship',
-    'Weather Alert: Heavy rain expected tomorrow',
-    'Tech News: New smartphone released',
-    'Health Tips: How to stay fit during winter',
-    'Travel Guide: Top destinations for 2024',
-    'Finance: Tips for saving money effectively',
-    'Entertainment: Upcoming movie releases',
-    'Education: New learning methods for kids',
-    'Science: Latest discoveries in space'
-  ];
+
 
   // Controllers for managing the scroll position and interaction.
   final ItemScrollController _scrollController = ItemScrollController();
-  final ItemPositionsListener _itemPositionsListener = ItemPositionsListener.create();
+  final ItemPositionsListener _itemPositionsListener =
+  ItemPositionsListener.create();
   Timer? _timer;
   int _currentIndex = 0;
 
@@ -57,7 +49,7 @@ class _NewsManagerState extends State<NewsManager> {
           duration: const Duration(seconds: 1),
         );
         _currentIndex++;
-        if (_currentIndex >= _newsItems.length) {
+        if (_currentIndex >= widget.list.length) {
           _currentIndex = 0;
         }
       }
@@ -78,7 +70,7 @@ class _NewsManagerState extends State<NewsManager> {
         duration: const Duration(seconds: 1),
       );
       _currentIndex++;
-      if (_currentIndex >= _newsItems.length) {
+      if (_currentIndex >= widget.list.length) {
         _currentIndex = 0;
       }
     }
@@ -91,7 +83,7 @@ class _NewsManagerState extends State<NewsManager> {
     if (_scrollController.isAttached) {
       _currentIndex--;
       if (_currentIndex < 0) {
-        _currentIndex = _newsItems.length - 1;
+        _currentIndex = widget.list.length - 1;
       }
       _scrollController.scrollTo(
         index: _currentIndex,
@@ -109,6 +101,9 @@ class _NewsManagerState extends State<NewsManager> {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AnnouncementCubit1>();
+
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -122,23 +117,41 @@ class _NewsManagerState extends State<NewsManager> {
           ),
         ),
         // Container for the carousel of news items.
-        Expanded(
-          child: SizedBox(
-            height: 190.h,
-            width: 275.w,
-            child: ScrollablePositionedList.builder(
-              scrollDirection: Axis.horizontal,
-              itemScrollController: _scrollController,
-              itemPositionsListener: _itemPositionsListener,
-              itemCount: _newsItems.length,
-              itemBuilder: (context, index) {
-                return NewsItem(
-                  newsTitle: _newsItems[index],
-                  imageUrl: 'assets/images/homepagepic.jpg',
-                );
-              },
-            ),
-          ),
+        BlocBuilder<AnnouncementCubit1, List<Announcement>>(
+          builder: (context, state) {
+            return Expanded(
+                child: cubit.isLoading
+                    ? SizedBox(
+                  height: 190.h,
+                  width: 275.w,
+                  child: const Center(
+                    child: OtrojaCircularProgressIndicator(),
+                  ),
+                )
+                    : InkWell(
+                  onTap: (){
+                    context.pushNamed(Routes.announcementPage);
+                  },
+                  child: SizedBox(
+                    height: 190.h,
+                    width: 275.w,
+                    child: ScrollablePositionedList.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemScrollController: _scrollController,
+                      itemPositionsListener: _itemPositionsListener,
+                      itemCount: widget.list.length,
+                      itemBuilder: (context, index) {
+                        // String test= widget.list[index].imagePath!;
+                        // print(test.isNotEmpty);
+                        return NewsItem(
+                          newsTitle: widget.list[index].title,
+                          imageUrl: widget.list[index].imagePath! ,
+                        );
+                      },
+                    ),
+                  ),
+                ));
+          },
         ),
         // Button to scroll to the next news item.
         IconButton(

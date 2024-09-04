@@ -2,6 +2,7 @@ class ShowActivityModel {
   String? name;
   int? points;
   String? description;
+  int? id;
 
   ShowActivityModel({this.name, this.points, this.description});
 
@@ -10,6 +11,8 @@ class ShowActivityModel {
     name = json['name'];
     points = json['points'];
     description = json['description'];
+    id = json['id'];
+
   }
 
   Map<String, dynamic> toJson() {
